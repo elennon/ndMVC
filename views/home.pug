@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  div.top
+    div.mirgin
+      h2 
+        div(ng-controller="ctrller")
+            p hflux count: {{count}}
+            p last in @ ... {{time}}
+
+  
+  script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js")
+  script(src="controllers/readingController.js")
