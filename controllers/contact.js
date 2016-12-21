@@ -4,7 +4,7 @@
  * Contact form page.
  */
 exports.getContact = (req, res) => {
-  res.render('contact', {
+  res.render('account/signup', {
     title: 'Contact'
   });
 };

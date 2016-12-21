@@ -51,9 +51,9 @@ app.use('/api/weatherStation', weatherStation);
 app.use('/api/pi', pi);
 
 app.use('/reading', readings);
-app.use('/regGroup', regGroup);
-app.use('/download', readings);
-app.use('/downloads', routes);
+// app.use('/regGroup', regGroup);
+// app.use('/download', readings);
+// app.use('/downloads', routes);
 /**
  * Connect to MongoDB.
  */
