@@ -10,23 +10,23 @@ html(ng-app="mApp")
     link(rel='shortcut icon', href='/favicon.png')
     link(rel='stylesheet', href='/css/main.css')
     link(rel='stylesheet', type='text/css', href='bootstrap/css/bootstrap.css')
-    link(rel='stylesheet', href='/bootstrap/css/bootstrap-responsive.min.css')
-    link(rel='stylesheet',  type='text/css', href='stylesheets/style.css')
-    link(rel='stylesheet',  type='text/css', href='bootstrap/bootselect/dist/css/bootstrap-select.css')   
+    link(rel='stylesheet', type='text/css', href='bootstrap/css/bootstrap-responsive.min.css')
+    link(rel='stylesheet', type='text/css', href='stylesheets/style.css')
+    link(rel='stylesheet', type='text/css', href='bootstrap/bootselect/dist/css/bootstrap-select.css')   
     
 
   body
     include partials/header
 
     .container
+      include partials/flash
       block content
 
     include partials/footer
 
-    script(src='/js/lib/jquery-2.2.4.min.js')
-    script(src='/js/lib/bootstrap.min.js')
-    script(src='/js/main.js')
     script(type='text/javascript', src='javascript/jquery-3.1.1.min.js')
+    //script(src='/js/lib/bootstrap.min.js')
+    script(src='/js/main.js')  
     script(type='text/javascript', src='bootstrap/js/bootstrap.min.js')
     script(type='text/javascript', src='bootstrap-datepicker-master/js/bootstrap-datepicker.js')
     script(type='text/javascript', src='bootstrap/bootselect/dist/js/bootstrap-select.js')

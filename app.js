@@ -22,10 +22,10 @@ const multer = require('multer');
 
 const upload = multer({ dest: path.join(__dirname, 'uploads') });
 
-dotenv.load({ path: '.env.example' });
+//dotenv.load({ path: '.env.example' });
 const homeController = require('./controllers/home');
 const buildingController = require('./controllers/building');
-const downloadController = require('./controllers/download');
+const downloadController = require('./controllers/downloadCtrl');
 const contactController = require('./controllers/contact');
 
 var routes = require('./routes/index');
@@ -57,12 +57,12 @@ app.use('/reading', readings);
 /**
  * Connect to MongoDB.
  */
-mongoose.Promise = global.Promise;
-mongoose.connect(process.env.MONGODB_URI);
-mongoose.connection.on('error', () => {
-  console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red('✗'));
-  process.exit();
-});
+// mongoose.Promise = global.Promise;
+// mongoose.connect(process.env.MONGODB_URI);
+// mongoose.connection.on('error', () => {
+//   console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red('✗'));
+//   process.exit();
+// });
 
 /**
  * Express configuration.
@@ -80,22 +80,30 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(expressValidator());
-
-//app.use(flash());
+app.use(session({
+  resave: true,
+  saveUninitialized: true,
+  secret: "123",
+//   store: new MongoStore({
+//     url: process.env.MONGODB_URI || process.env.MONGOLAB_URI,
+//     autoReconnect: true
+//   })
+}));
+app.use(flash());
 
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }));
 
 app.get('/', homeController.index);
-app.get('/contact', buildingController.getBuilding);
+app.get('/registerBuilding', buildingController.getBuilding);
 app.get('/download', downloadController.getDownload);
+app.post('/registerBuilding', buildingController.postBuilding);
+app.post('/download', downloadController.postDownload);
+
 /**
  * Error Handler.
  */
 app.use(errorHandler());
 
-/**
- * Start Express server.
- */
 app.listen(app.get('port'), () => {
   console.log('%s App is running at http://localhost:%d in %s mode', chalk.green('✓'), app.get('port'), app.get('env')); 
   console.log('  Press CTRL-C to stop\n');
