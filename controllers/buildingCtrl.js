@@ -1,6 +1,7 @@
 'use strict';
 var monk = require('monk');
 var db = monk('localhost:27017/Measurements');
+const uuid = require('node-uuid');
 
 exports.getBuilding = (req, res) => {
     res.render('registerBuilding', {
@@ -23,16 +24,16 @@ exports.postBuilding = (req, res) => {
         return res.redirect('/registerBuilding');
     }
     var collection = db.get('Building');
+    let newId = uuid.v4();
     collection.insert({
-        id: uuid.v4(),
+        id: newId,
         name: req.body.name,
         location: req.body.location,
         description: req.body.description,
         createdAt : Date.now()
     }, function(err, sensor){
         if (err) throw err;
-        res.json(sensor);
-    });
-    req.flash('success', { msg: 'Email has been sent successfully!' });
-    res.redirect('/registerBuilding');
+        req.flash('success', { msg: 'The building has been registered successfully! The new id is:' + newId });
+        res.redirect('/registerBuilding');
+    });    
 };

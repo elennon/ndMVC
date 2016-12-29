@@ -9,7 +9,7 @@ mApp.controller('ctrller', ['$scope', '$http', function($scope, $http) {
     $http.get('reading/weather').success(function(response){
         $scope.weather = response;
     });
-    // $http.get('reading/wstime').success(function(response){
-    //     $scope.wstime = response;
-    // });
+    $http.get('reading/time').success(function(response){
+        $scope.time = response;
+    });
 }]); 

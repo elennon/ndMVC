@@ -25,7 +25,15 @@ block content
                 select.selectpicker.form-control(multiple, id="building", name="building")
                     option GPO                  
                     option Castletown house
-                    option the gartden shed  
+                    option the gartden shed
+        .form-group
+            label(class='col-sm-2 control-label', for='pi') Pi
+            .col-sm-6
+                select.selectpicker.form-control(multiple, id="pi", name="pi")
+                    option east wall                  
+                    option west wall
+                    option north wall 
+                    option south wall 
         .form-group   
             label(class='col-sm-2 control-label', for='sensor') Sensor
             .col-sm-6
@@ -42,7 +50,7 @@ block content
                 select.selectpicker.form-control(multiple, id="format", name="format")
                     option json                  
                     option xml
-                    option csv    
+                    option excel    
         .form-group
             .col-sm-offset-2.col-sm-8
                 button.btn.btn-primary(type='submit')
