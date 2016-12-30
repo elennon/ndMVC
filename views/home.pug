@@ -1,14 +1,42 @@
 extends layout
 
 block content
-  div.top
-    div.mirgin
-      h2 
-        div(ng-controller="ctrller")
-            p hflux count: {{count}}
-            p last in @ ... {{time}}
-            //- p weather ... {{weather}} //last in @ ... {{wstime}}
-
+    .page-header
   
-  script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js")
-  script(src="controllers/readingController.js")
+    form.form-horizontal(method='POST')
+        input(type='hidden', name='_csrf', value=_csrf)
+        .form-group
+            label(class='col-sm-2 control-label', for='building') Building
+            .col-sm-4
+                select.selectpicker.form-control(id="building", name="building")
+                    each building, i in buildings
+                        option(value=building.id) #{building.name}     
+            label(class='col-sm-2 control-label', for='pi') Pi
+            .col-sm-4
+                select.selectpicker.form-control(id="pi", name="pi")
+                    each pi, i in pies
+                        option(value=pi.id) #{pi.name}      
+        .form-group   
+            label(class='col-sm-2 control-label', for='sensor') Sensor
+            .col-sm-4
+                select.selectpicker.form-control(id="sensor", name="sensor")
+                    option select one
+                    option(value='Bmp180') Bmp180         
+                    option(value='Hflux') Hflux
+                    option(value='CavityTemp') Cavity Temp
+                    option(value='Mlx906') Mlx906       
+                    option(value='Sht15') Sht15
+                    option(value='Sdp610') Sdp610
+            label(class='col-sm-2 control-label', for='batch') view:
+            .col-sm-4
+                select.selectpicker.form-control(id="batch", name="batch")
+                    option(value=20) 20
+                    option(value=50) 50         
+                    option(value=100) 100
+
+    #users_list
+        include partials/valTable.pug
+  
+    script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js")
+    script(src="controllers/readingController.js")
+    //script(src='javascript/main.js')  

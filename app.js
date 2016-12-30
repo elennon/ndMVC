@@ -23,7 +23,7 @@ const multer = require('multer');
 const upload = multer({ dest: path.join(__dirname, 'uploads') });
 
 //dotenv.load({ path: '.env.example' });
-const homeController = require('./controllers/home');
+const homeController = require('./controllers/homeCtrl');
 const buildingController = require('./controllers/buildingCtrl');
 const downloadController = require('./controllers/downloadCtrl');
 const contactController = require('./controllers/contact');
@@ -39,6 +39,7 @@ var cavityTemp = require('./routes/cavityTemp');
 var hflux = require('./routes/hflux');
 var weatherStation = require('./routes/weatherStation');
 var pi = require('./routes/pi');
+var building = require('./routes/building');
 const app = express();
 //app.use('/', routes);
 app.use('/api/bmp180', bmp180);
@@ -49,6 +50,7 @@ app.use('/api/cavityTemp', cavityTemp);
 app.use('/api/hflux', hflux);
 app.use('/api/weatherStation', weatherStation);
 app.use('/api/pi', pi);
+app.use('/api/building', building);
 
 app.use('/reading', readings);
 // app.use('/regGroup', regGroup);
@@ -94,6 +96,8 @@ app.use(flash());
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }));
 
 app.get('/', homeController.index);
+app.post('/getReadings', homeController.getReadings);
+app.post('/getPies', homeController.getPies);
 app.get('/registerBuilding', buildingController.getBuilding);
 app.get('/download', downloadController.getDownload);
 app.post('/registerBuilding', buildingController.postBuilding);

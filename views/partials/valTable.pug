@@ -1,0 +1,14 @@
+div.container
+    div.content
+        table.table.table-striped
+            thead
+                tr
+                    th sensor
+                    th time
+                    th value
+            tbody
+                each reading, index in readings
+                    tr(data-id="#{reading.id}")      
+                        td= reading.sensor
+                        td= reading.createdAt
+                        td= reading.val
