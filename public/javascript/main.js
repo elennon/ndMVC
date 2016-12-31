@@ -25,7 +25,7 @@ $(document).ready(function() {
         alert(piId);
         $.ajax({
             method: 'POST',
-            url: 'http://localhost:3000/getReadings/',
+            url: 'getReadings/',
             dataType: "html",
             contentType: "application/json",
             data: JSON.stringify({'building': buildingId, 'pi' : piId, 
