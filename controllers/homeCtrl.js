@@ -60,11 +60,11 @@ exports.getReadings = (req, res) => {
             console.log('error:' + err);
         } else{            
             var collection = db.collection(sensor);
-            collection.find({"ip": piId}).sort({"createdAt":-1}).limit(batch).toArray(function(err, result){
+            collection.find({"ip": piId}).sort({"createdAt":1}).limit(batch).toArray(function(err, result){
                 if(err){
                     res.send(err);
                 } else if(result.length){
-                    console.log('and the number is ********' + result.length)
+                    console.log('and the number is from getReadings ********' + result.length)
                     res.render('partials/valTable', { readings : result });
                 } else{
                     res.send('no thing found');
