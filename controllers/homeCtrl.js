@@ -51,6 +51,7 @@ function getBuilding(res, callback){
 }
 
 exports.getReadings = (req, res) => {
+    console.log('in getReadings');
     var buildingId = req.body.building;
     var piId = req.body.pi;
     var sensor = req.body.sensor;
