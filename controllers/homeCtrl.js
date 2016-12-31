@@ -51,7 +51,6 @@ function getBuilding(res, callback){
 }
 
 exports.getReadings = (req, res) => {
-    console.log('in getReadings');
     var buildingId = req.body.building;
     var piId = req.body.pi;
     var sensor = req.body.sensor;
@@ -60,6 +59,7 @@ exports.getReadings = (req, res) => {
         if(err){
             console.log('error:' + err);
         } else{            
+            console.log('in getReadings at connected');
             var collection = db.collection(sensor);
             //collection.find({"ip": piId}).sort({"createdAt":1}).limit(batch).toArray(function(err, result){
             collection.find({"ip": piId}).toArray(function(err, result){
