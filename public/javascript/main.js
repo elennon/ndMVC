@@ -22,6 +22,7 @@ $(document).ready(function() {
         var piId = $("#pi").val();
         var sensor = $("#sensor").val();
         var batch = $("#batch").val();
+        alert(piId);
         $.ajax({
             method: 'POST',
             url: 'http://localhost:3000/getReadings/',
@@ -30,7 +31,7 @@ $(document).ready(function() {
             data: JSON.stringify({'building': buildingId, 'pi' : piId, 
                 'sensor': sensor, 'batch' : batch }),
             success: function(data){
-                //alert('dogs');
+                alert('dogs');
                 $('#users_list').html(data);
             },
         });
