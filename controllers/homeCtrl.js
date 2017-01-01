@@ -2,7 +2,8 @@ var express = require('express');
 var router = express.Router();
 var jsonfile = require('jsonfile')
 var MongoClient = require('mongodb').MongoClient
-var url = 'mongodb://localhost:27017/Measurements';	
+var url = 'mongodb://localhost:27017/Measurements';
+var moment = require('moment');
 
 exports.index = (req, res) => {
     getBuilding(res, getPies);  
@@ -19,7 +20,8 @@ function getPies(res, buildings){
                     res.send(err);
                 } else if(result.length){
                     console.log('and the number is ********' + result.length)
-                    res.render('home', {title: 'Home', buildings : buildings, pies : result, readings : {} });
+                    res.render('home', {title: 'Home', buildings : buildings, 
+                        pies : result, readings : {}, moment: moment });
                     db.close();
                 } else{
                     res.send('no thing found');
@@ -68,7 +70,7 @@ exports.getReadings = (req, res) => {
                     res.send(err);
                 } else if(result.length){
                     console.log('and the number is from getReadings no sort ********' + result.length)
-                    res.render('partials/valTable', { readings : result });
+                    res.render('partials/valTable', { readings : result, moment: moment, sensor: sensor });
                     db.close();
                 } else{
                     res.send('no thing found');
@@ -91,7 +93,7 @@ exports.getPies = (req, res) => {
                     res.send(err);
                 } else if(result.length){
                     console.log('and the number is ********' + result.length)
-                    res.render('home', {title: 'Home', pies : result, readings : {} });
+                    res.render('home', {title: 'Home', pies : result, readings : {}, moment: moment });
                     db.close();
                 } else{
                     res.send('no thing found');
