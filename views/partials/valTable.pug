@@ -15,6 +15,26 @@ div.container
                             td #{moment(reading.createdAt).format("YYYY-MM-DD HH:mm")}
                             td= reading.ambiTemp
                             td= reading.skyTemp 
+            else if sensor == 'WeatherStation'
+                thead
+                    tr
+                        th wind_direction
+                        th wind_speed
+                        th temp
+                        th pressure
+                        th precipitation
+                        th RH%
+                        th time
+                tbody
+                    each reading, index in readings
+                        tr(data-id="#{reading.id}")      
+                            td= reading.wind_direction
+                            td reading.wind_speed
+                            td= reading.temp
+                            td= reading.pressure
+                            td= reading.precipitation
+                            td= reading.RH_per_cent
+                            td #{moment(reading.time).format("YYYY-MM-DD HH:mm")}
             else
                 thead
                     tr
