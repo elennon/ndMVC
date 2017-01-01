@@ -78,7 +78,7 @@ exports.postDownload = (req, res) => {
                     switch(format){
                         case 'json':
                             jsonfile.writeFile(filename + ".json", result, {flags:'w'}, function (err) {
-                                res.download("../data.json");
+                                res.download("data.json");
                             })	
                             break;
                         case 'xml':
@@ -86,7 +86,7 @@ exports.postDownload = (req, res) => {
                             fs.writeFile(filename + '.xml', xml, {flags:'w'}, function(err, data){
                                 if (err) console.log(err);
                                 console.log("successfully written our update xml to file");
-                                res.download("../data.xml");
+                                res.download("data.xml");
                             })
                             break;
                         case 'excel':
@@ -94,7 +94,7 @@ exports.postDownload = (req, res) => {
                             fs.writeFile(filename + '.xlsx', xls, 'binary', function(err, data){
                                 if (err) console.log(err);
                                 console.log("successfully written our update xml to file");
-                                res.download("../" + filename + '.xlsx');
+                                res.download(filename + '.xlsx');
                             })
                             break;
                     } 
