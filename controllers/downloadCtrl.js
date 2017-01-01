@@ -70,11 +70,11 @@ exports.postDownload = (req, res) => {
             console.log('error:' + err);
         } else{            
             var collection = db.collection(sensor);
-            collection.find({ "createdAt": { $gt: fromdate } }).toArray(function(err, result){
+            collection.find().toArray(function(err, result){
                 if(err){
                     res.send(err);
                 } else if(result.length){
-                    console.log('and the number is ********' + result.length)
+                    console.log('and the number is ********   in download post' + result.length)
                     switch(format){
                         case 'json':
                             jsonfile.writeFile(filename + ".json", result, {flags:'w'}, function (err) {
@@ -97,13 +97,14 @@ exports.postDownload = (req, res) => {
                                 res.download(filename + '.xlsx');
                             })
                             break;
-                    }		
+                    } 
+                    db.close();
                 } else{
                     res.send('no thing found');
+                    db.close();
                 }
             })
         }
-        db.close();
     });
     // req.flash('success', { msg: 'Email has been sent successfully!' });
     // res.redirect('/registerBuilding');
