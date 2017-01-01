@@ -20,12 +20,13 @@ function getPies(res, buildings){
                 } else if(result.length){
                     console.log('and the number is ********' + result.length)
                     res.render('home', {title: 'Home', buildings : buildings, pies : result, readings : {} });
+                    db.close();
                 } else{
                     res.send('no thing found');
+                    db.close();
                 }
             })
         }
-        db.close();
     });
 }
 
@@ -40,13 +41,14 @@ function getBuilding(res, callback){
                     res.send(err);
                 } else if(result.length){
                     console.log('and the number is ********' + result.length)
-                    callback(res, result)
+                    callback(res, result);
+                    db.close();
                 } else{
                     res.send('no thing found');
+                    db.close();
                 }
             })
         }
-        db.close();
     });
 }
 
@@ -61,19 +63,19 @@ exports.getReadings = (req, res) => {
         } else{            
             console.log('in getReadings at connected');
             var collection = db.collection(sensor);
-            //collection.find({"ip": piId}).sort({"createdAt":1}).limit(batch).toArray(function(err, result){
-            collection.find({"ip": piId}).toArray(function(err, result){
+            collection.find({"ip": piId}).sort({"createdAt":-1}).limit(batch).toArray(function(err, result){
                 if(err){
                     res.send(err);
                 } else if(result.length){
                     console.log('and the number is from getReadings no sort ********' + result.length)
                     res.render('partials/valTable', { readings : result });
+                    db.close();
                 } else{
                     res.send('no thing found');
+                    db.close();
                 }
             })
-        }
-        db.close();
+        }        
     });
 };
 
@@ -90,12 +92,13 @@ exports.getPies = (req, res) => {
                 } else if(result.length){
                     console.log('and the number is ********' + result.length)
                     res.render('home', {title: 'Home', pies : result, readings : {} });
+                    db.close();
                 } else{
                     res.send('no thing found');
+                    db.close();
                 }
             })
         }
-        db.close();
     });
 }
 //  .sort({"group": building})
