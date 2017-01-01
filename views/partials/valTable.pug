@@ -29,7 +29,7 @@ div.container
                     each reading, index in readings
                         tr(data-id="#{reading.id}")      
                             td= reading.wind_direction
-                            td reading.wind_speed
+                            td= reading.wind_speed
                             td= reading.temp
                             td= reading.pressure
                             td= reading.precipitation

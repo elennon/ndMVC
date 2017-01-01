@@ -20,30 +20,29 @@ block content
                     div.input-group-addon
                         span.glyphicon.glyphicon-th
         .form-group
-            label(class='col-sm-2 control-label', for='building') Building
+            label(class='col-sm-2 control-label', for='dl_building') Building
             .col-sm-6
-                select.selectpicker.form-control(multiple, id="building", name="building")
-                    option GPO                  
-                    option Castletown house
-                    option the gartden shed
+                select.selectpicker.form-control(multiple, id="dl_building", name="dl_building")
+                    each building, i in buildings
+                        option(value=building.id) #{building.name}
         .form-group
-            label(class='col-sm-2 control-label', for='pi') Pi
+            label(class='col-sm-2 control-label', for='dl_pi') Pi
             .col-sm-6
-                select.selectpicker.form-control(multiple, id="pi", name="pi")
-                    option east wall                  
-                    option west wall
-                    option north wall 
-                    option south wall 
+                select.selectpicker.form-control(multiple, id="dl_pi", name="dl_pi")
+                    each pi, i in pies
+                        option(value=pi.id) #{pi.name}      
         .form-group   
-            label(class='col-sm-2 control-label', for='sensor') Sensor
+            label(class='col-sm-2 control-label', for='dl_sensor') Sensor
             .col-sm-6
-                select.selectpicker.form-control(multiple, id="sensor", name="sensor")
-                    option Bmp180                  
-                    option Hflux
-                    option Cavity Temp
-                    option Mlx906                  
-                    option Sht15
-                    option Sdp610
+                select.selectpicker.form-control(multiple, id="dl_sensor", name="dl_sensor")
+                    option select one
+                    option(value='Bmp180') Bmp180         
+                    option(value='Hflux') Hflux
+                    option(value='CavityTemp') Cavity Temp
+                    option(value='Mlx906') Mlx906       
+                    option(value='Sht15') Sht15
+                    option(value='Sdp610') Sdp610
+                    option(value='WeatherStation') weather station
         .form-group
             label(class='col-sm-2 control-label', for='format') Format:
             .col-sm-6

@@ -5,27 +5,71 @@ var fs = require('fs');
 var util = require('util');
 var json2xls = require('json2xls');
 var MongoClient = require('mongodb').MongoClient
+let url = 'mongodb://localhost:27017/Measurements';
 
 exports.getDownload = (req, res) => {
-  res.render('download', {
-    title: 'Download'
-  });
+    getBuilding(res, getPies);
 };
+
+function getPies(res, buildings){
+    MongoClient.connect(url, function(err, db){
+        if(err){
+            console.log('error:' + err);
+        } else{            
+            var collection = db.collection('Pi');
+            collection.find().toArray(function(err, result){
+                if(err){
+                    res.send(err);
+                } else if(result.length){
+                    console.log('and the number is ********' + result.length)
+                    res.render('download', {title: 'Download', buildings : buildings, 
+                        pies : result});
+                    db.close();
+                } else{
+                    res.send('no thing found');
+                    db.close();
+                }
+            })
+        }
+    });
+}
+
+function getBuilding(res, callback){
+    MongoClient.connect(url, function(err, db){
+        if(err){
+            console.log('error:' + err);
+        } else{            
+            var collection = db.collection('Building');
+            collection.find().toArray(function(err, result){
+                if(err){
+                    res.send(err);
+                } else if(result.length){
+                    console.log('and the number is ********' + result.length)
+                    callback(res, result);
+                    db.close();
+                } else{
+                    res.send('no thing found');
+                    db.close();
+                }
+            })
+        }
+    });
+}
 
 exports.postDownload = (req, res) => {
     var fromdate = new Date(req.body.Fromdate);
 	var todate = new Date(req.body.Todate);
-	var building = req.body.building;
-    var pi = req.body.pi;
-    var sensor = req.body.sensor;
+	var building = req.body.dl_building;
+    var pi = req.body.dl_pi;
+    var sensor = req.body.dl_sensor;
 	var format = req.body.format;
     //let filename = util.format('%s-%s-%s-%s-%s', building, pi, sensor, fromdate, todate)
     let filename = "data";
-    MongoClient.connect("mongodb://localhost:27017/Measurements", function(err, db){
+    MongoClient.connect(url, function(err, db){
         if(err){
             console.log('error:' + err);
         } else{            
-            var collection = db.collection('Hflux');
+            var collection = db.collection(sensor);
             collection.find({ "createdAt": { $gt: fromdate } }).toArray(function(err, result){
                 if(err){
                     res.send(err);
