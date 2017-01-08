@@ -15,6 +15,34 @@ div.container
                             td #{moment(reading.createdAt).format("YYYY-MM-DD HH:mm")}
                             td= reading.ambiTemp
                             td= reading.skyTemp 
+            else if sensor == 'Bmp180'
+                thead
+                    tr
+                        th sensor
+                        th time
+                        th temp
+                        th pressure
+                tbody
+                    each reading, index in readings
+                        tr(data-id="#{reading.id}")      
+                            td= reading.sensor
+                            td #{moment(reading.createdAt).format("YYYY-MM-DD HH:mm")}
+                            td= reading.temp
+                            td= reading.pressure
+            else if sensor == 'Sht15'
+                thead
+                    tr
+                        th sensor
+                        th time
+                        th temp
+                        th rel-humidity
+                tbody
+                    each reading, index in readings
+                        tr(data-id="#{reading.id}")      
+                            td= reading.sensor
+                            td #{moment(reading.createdAt).format("YYYY-MM-DD HH:mm")}
+                            td= reading.temperature
+                            td= reading.rh    
             else if sensor == 'WeatherStation'
                 thead
                     tr
