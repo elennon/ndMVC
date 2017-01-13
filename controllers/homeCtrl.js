@@ -65,19 +65,33 @@ exports.getReadings = (req, res) => {
         } else{            
             console.log('in getReadings at connected');
             var collection = db.collection(sensor);
-            let sort = (sensor === "WeatherStation") ? {} : {"ip": piId};           
-            collection.find(sort).sort({"createdAt":-1}).limit(batch).toArray(function(err, result){
-                if(err){
-                    res.send(err);
-                } else if(result.length){
-                    console.log('and the number is from getReadings no sort ********' + result.length)
-                    res.render('partials/valTable', { readings : result, moment: moment, sensor: sensor });
-                    db.close();
-                } else{
-                    res.send('no thing found');
-                    db.close();
-                }
-            })
+            if (sensor === "WeatherStation") {
+                collection.find().sort({"createdAt":-1}).limit(batch).toArray(function(err, result){
+                    if(err){
+                        res.send(err);
+                    } else if(result.length){
+                        console.log('and the number is from getReadings no sort ********' + result.length)
+                        res.render('partials/valTable', { readings : result, moment: moment, sensor: sensor });
+                        db.close();
+                    } else{
+                        res.send('no thing found');
+                        db.close();
+                    }
+                })
+            } else {
+                collection.find({"ip": piId}).sort({"createdAt":-1}).limit(batch).toArray(function(err, result){
+                    if(err){
+                        res.send(err);
+                    } else if(result.length){
+                        console.log('and the number is from getReadings no sort ********' + result.length)
+                        res.render('partials/valTable', { readings : result, moment: moment, sensor: sensor });
+                        db.close();
+                    } else{
+                        res.send('no thing found');
+                        db.close();
+                    }
+                })
+            }
         }        
     });
 };
