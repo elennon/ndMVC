@@ -2,7 +2,7 @@ var mApp = angular.module('mApp', []);
 mApp.controller('ctrller', ['$scope', '$http', function($scope, $http) { 
 
     $http.get('pi/').success(function(response){
-        $scope.pies = response;
+        //$scope.pies = response;
     });
 
     $http.get('building/').success(function(response){

@@ -9,11 +9,9 @@ block content
             label(class='col-sm-2 control-label', for='building') Building
             .col-sm-4
                 select.selectpicker.form-control(id="building", name="building", ng-model="buildingSelected" ng-change='selectedBuilding(buildingSelected)' ng-options="building.name for (x , building ) in buildings")
-                    
             label(class='col-sm-2 control-label', for='pi') Pi
             .col-sm-4
-                select.selectpicker.form-control(id="pi", name="pi")
-                    option(ng-repeat="pie in pies" ng-value="{{pie.id}}") {{pie.name}}
+                select.selectpicker.form-control(id="pi", name="pi", ng-model="piSelected" ng-options="pi as pi.name for pi in pies track by item.id")
         .form-group   
             label(class='col-sm-2 control-label', for='sensor') Sensor
             .col-sm-4
