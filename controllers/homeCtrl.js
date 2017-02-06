@@ -5,7 +5,7 @@ var MongoClient = require('mongodb').MongoClient
 var url = 'mongodb://localhost:27017/Measurements';
 var moment = require('moment');
 
-exports.index = (req, res) => {
+exports.index = (req, res, next) => {
     getBuilding(res, getPies);  
 };
 
@@ -15,7 +15,8 @@ function getPies(res, buildings){
             console.log('error:' + err);
         } else{            
             var collection = db.collection('Pi');
-            collection.find().toArray(function(err, result){
+            let defaultBuildingId = buildings[0].id;
+            collection.find({"group": defaultBuildingId}).toArray(function(err, result){
                 if(err){
                     res.send(err);
                 } else if(result.length){
@@ -38,7 +39,7 @@ function getBuilding(res, callback){
             console.log('error:' + err);
         } else{            
             var collection = db.collection('Building');
-            collection.find().toArray(function(err, result){
+            collection.find().sort({"name": 1}).toArray(function(err, result){
                 if(err){
                     res.send(err);
                 } else if(result.length){
@@ -66,7 +67,7 @@ exports.getReadings = (req, res) => {
             console.log('in getReadings at connected');
             var collection = db.collection(sensor);
             if (sensor === "WeatherStation") {
-                collection.find().sort({"createdAt":-1}).limit(batch).toArray(function(err, result){
+                collection.find().sort({"time":-1}).limit(batch).toArray(function(err, result){
                     if(err){
                         res.send(err);
                     } else if(result.length){
@@ -108,7 +109,11 @@ exports.getPies = (req, res) => {
                     res.send(err);
                 } else if(result.length){
                     console.log('and the number is ********' + result.length)
-                    res.render('home', {title: 'Home', pies : result, readings : {}, moment: moment });
+                    //res.render('home', {title: 'Home', pies : result, readings : {}, moment: moment });
+                    //res.setHeader('Content-Type', 'application/json');
+                    //res.send(JSON.stringify({ pies: result }));
+                    //res.send(JSON.stringify(result));
+                    res.render('partials/piDropdown', { pies: result });
                     db.close();
                 } else{
                     res.send('no thing found');

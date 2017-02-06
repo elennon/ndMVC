@@ -17,8 +17,8 @@
           a(href='/registerBuilding') Register
         li(class=(title == 'Download') ? 'active' : undefined)
           a(href='/download') Download
-        li
-          a(href='/status') Status
+        li(class=(title == 'status') ? 'active' : undefined)
+          a(href='/charts') Wind speed
       ul.nav.navbar-nav.navbar-right
         if !user
           li(class=(title == 'Login') ? 'active' : undefined)

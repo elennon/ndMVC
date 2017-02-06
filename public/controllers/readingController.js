@@ -1,15 +1,21 @@
 var mApp = angular.module('mApp', []); 
 mApp.controller('ctrller', ['$scope', '$http', function($scope, $http) { 
-    $http.get('reading/count').success(function(response){
-        $scope.count = response;
+
+    $http.get('pi/').success(function(response){
+        $scope.pies = response;
     });
-    $http.get('reading/time').success(function(response){
-        $scope.time = response;
+
+    $http.get('building/').success(function(response){
+        $scope.buildings = response;
     });
-    $http.get('reading/weather').success(function(response){
-        $scope.weather = response;
-    });
-    $http.get('reading/time').success(function(response){
-        $scope.time = response;
-    });
+
+    $scope.selectedBuilding = function(id) {
+        //alert("cliffs" + id);
+        //Your logic    , {params:{"param1": val1, "param2": val2}}
+        $http.get('pi/filterBuilding', {params:{"id": id }}).success(function(response){
+            alert("cliffs       " + response);
+            $scope.pies = response;
+        });
+    }
+
 }]); 

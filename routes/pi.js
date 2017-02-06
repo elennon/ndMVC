@@ -12,6 +12,16 @@ router.get('/', function(req, res) {
     });
 });
 
+router.get('/filterBuilding', function(req, res) {
+    var building = JSON.parse(req.query.id);
+    var id = building.id;
+    var collection = db.get('Pi');
+    collection.find({"group": id}, function(err, pi){
+        if (err) throw err;
+      	res.json(pi);
+    });
+});
+
 router.post('/', function(req, res){
     var collection = db.get('Pi');
     collection.insert({
