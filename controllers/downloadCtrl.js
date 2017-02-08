@@ -70,7 +70,8 @@ exports.postDownload = (req, res) => {
             console.log('error:' + err);
         } else{            
             var collection = db.collection(sensor);
-            collection.find().limit(1000).toArray(function(err, result){
+            collection.find({"ip": pi}, { "createdAt": { $gt: fromdate.toISOString() } } ).toArray(function(err, result){
+                      
                 if(err){
                     res.send(err);
                 } else if(result.length){
