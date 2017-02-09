@@ -4,7 +4,7 @@ block content
     .page-header
         h3 Download:
 
-    form.form-horizontal(method='POST')
+    form.form-horizontal(action='/download', method='POST')
         input(type='hidden', name='_csrf', value=_csrf)
         .form-group
             label(class='col-sm-2 control-label', for='fromdate') From:
@@ -21,16 +21,12 @@ block content
                         span.glyphicon.glyphicon-th
         .form-group
             label(class='col-sm-2 control-label', for='dl_building') Building
-            .col-sm-6
-                select.selectpicker.form-control(multiple, id="dl_building", name="dl_building")
-                    each building, i in buildings
-                        option(value=building.id) #{building.name}
+            .col-sm-4
+                select.selectpicker.form-control(id="dl_building", name="dl_building", ng-model="buildingSelected" ng-change='selectedBuilding(buildingSelected)' ng-options="building.name for building in buildings track by building.id")
         .form-group
             label(class='col-sm-2 control-label', for='dl_pi') Pi
-            .col-sm-6
-                select.selectpicker.form-control(multiple, id="dl_pi", name="dl_pi")
-                    each pi, i in pies
-                        option(value=pi.id) #{pi.name}      
+            .col-sm-4
+                select.selectpicker.form-control(id="pi" name="dl_pi" ng-model="piSelected" ng-options="pi.name for pi in pies track by pi.id")   
         .form-group   
             label(class='col-sm-2 control-label', for='dl_sensor') Sensor
             .col-sm-6
@@ -54,3 +50,7 @@ block content
             .col-sm-offset-2.col-sm-8
                 button.btn.btn-primary(type='submit')
                     | Download
+
+
+    script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js")
+    script(src="controllers/readingController.js")

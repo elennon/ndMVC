@@ -6,6 +6,7 @@ var util = require('util');
 var json2xls = require('json2xls');
 var MongoClient = require('mongodb').MongoClient
 let url = 'mongodb://localhost:27017/Measurements';
+var moment = require('moment');
 
 exports.getDownload = (req, res) => {
     getBuilding(res, getPies);
@@ -57,25 +58,24 @@ function getBuilding(res, callback){
 }
 
 exports.postDownload = (req, res) => {
-    var fromdate = new Date(req.body.Fromdate);
-	var todate = new Date(req.body.Todate);
+    var fromdate = new Date(req.body.Fromdate).getTime();
+	var todate = new Date(req.body.Todate).getTime();
 	var building = req.body.dl_building;
     var pi = req.body.dl_pi;
     var sensor = req.body.dl_sensor;
 	var format = req.body.format;
-    //let filename = util.format('%s-%s-%s-%s-%s', building, pi, sensor, fromdate, todate)
-    let filename = "data";
+    //let filename = util.format('%s-%s-%s-%s-%s', building, pi, sensor, fromdate, todate) , {"createdAt": {"$gte": fromdate }} 
+    let filename = "data"; // {"ip": pi}
     MongoClient.connect(url, function(err, db){
         if(err){
             console.log('error:' + err);
         } else{            
             var collection = db.collection(sensor);
-            collection.find({"ip": pi}, { "createdAt": { $gt: fromdate.toISOString() } } ).toArray(function(err, result){
-                      
+              collection.find({"ip": pi , "createdAt": {"$gte": fromdate }}).toArray(function(err, result){        
                 if(err){
                     res.send(err);
                 } else if(result.length){
-                    console.log('and the number is ********   in download post' + result.length)
+                    console.log('and the number is ********   in download post' + result.length);
                     switch(format){
                         case 'json':
                             jsonfile.writeFile(filename + ".json", result, {flags:'w'}, function (err) {
