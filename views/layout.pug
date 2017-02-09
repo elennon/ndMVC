@@ -8,30 +8,31 @@ html(ng-app="mApp")
     meta(name='csrf-token', content=_csrf)
     title #{title} - Building Nrg
     link(rel='shortcut icon', href='/favicon.png')
-    link(rel='stylesheet', href='/css/main.css')
+    link(rel='stylesheet', href='stylesheets/main.css')
     link(rel='stylesheet', type='text/css', href='bootstrap/css/bootstrap.css')
-    link(rel='stylesheet', type='text/css', href='bootstrap/css/bootstrap-responsive.min.css')
+    link(rel='stylesheet', type='text/css', href='stylesheets/bootstrap-responsive.min.css')
     link(rel='stylesheet', type='text/css', href='stylesheets/style.css')
-    link(rel='stylesheet', type='text/css', href='bootstrap/bootselect/dist/css/bootstrap-select.css')   
+    link(rel='stylesheet', type='text/css', href='bootstrap/bootselect/dist/css/bootstrap-select.css')
     
 
   body
     include partials/header
 
-    .container
-      include partials/flash
-      block content
+    div(ng-controller="ctrller")
+      .container
+        include partials/flash
+        block content
 
     include partials/footer
 
-    script(type='text/javascript', src='javascript/jquery-3.1.1.min.js')
+    script(type='text/javascript', src='javascripts/jquery-3.1.1.min.js')
     //script(src='/js/lib/bootstrap.min.js')
-    script(src='javascript/main.js')
+    script(src='javascripts/main.js')
     script(type='text/javascript', src='bootstrap/js/bootstrap.min.js')
-    script(type='text/javascript', src='bootstrap-datepicker-master/js/bootstrap-datepicker.js')
+    script(type='text/javascript', src='javascripts/bootstrap-datepicker.js')
     script(type='text/javascript', src='bootstrap/bootselect/dist/js/bootstrap-select.js')
-    script(type='text/javascript', src="javascript/highcharts.js")
-
+    script(type='text/javascript', src="javascripts/highcharts.js")
+    
     // Google Analytics: change UA-XXXXX-X to be your site's ID
     script.
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

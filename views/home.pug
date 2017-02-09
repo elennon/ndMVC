@@ -2,20 +2,15 @@ extends layout
 
 block content
     .page-header
-  
     form.form-horizontal(method='POST')
         input(type='hidden', name='_csrf', value=_csrf)
         .form-group
             label(class='col-sm-2 control-label', for='building') Building
             .col-sm-4
-                select.selectpicker.form-control(id="building", name="building")
-                    each building, i in buildings
-                        option(value=building.id) #{building.name}     
+                select.selectpicker.form-control(id="building", name="building", ng-model="buildingSelected" ng-change='selectedBuilding(buildingSelected)' ng-options="building.name for (x , building ) in buildings")
             label(class='col-sm-2 control-label', for='pi') Pi
             .col-sm-4
-                select.selectpicker.form-control(id="pi", name="pi")
-                    each pi, i in pies
-                        option(value=pi.id) #{pi.name}      
+                select.selectpicker.form-control(id="pi" name="pi" ng-model="piSelected" ng-options="pi.name for pi in pies track by pi.id")
         .form-group   
             label(class='col-sm-2 control-label', for='sensor') Sensor
             .col-sm-4
