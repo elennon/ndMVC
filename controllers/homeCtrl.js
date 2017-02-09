@@ -66,7 +66,7 @@ exports.getReadings = (req, res) => {
             console.log('in getReadings at connected');
             var collection = db.collection(sensor);
             if (sensor === "WeatherStation") {
-                collection.find().sort({"createdAt":-1}).limit(batch).toArray(function(err, result){
+                collection.find().sort({"time":-1}).limit(batch).toArray(function(err, result){
                     if(err){
                         res.send(err);
                     } else if(result.length){

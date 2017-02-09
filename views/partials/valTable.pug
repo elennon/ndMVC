@@ -61,7 +61,7 @@ div.container
                             td= reading.temp
                             td= reading.pressure
                             td= reading.precipitation
-                            td= reading.RH_per_cent
+                            td= reading['rh%']
                             td #{moment(reading.time).format("YYYY-MM-DD HH:mm")}
             else
                 thead
