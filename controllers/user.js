@@ -3,15 +3,16 @@ const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const passport = require('passport');
 const User = require('../models/User');
+var moment = require('moment');
 
 /**
  * GET /login
  * Login page.
  */
 exports.getLogin = (req, res) => {
-  if (req.user) {
-    return res.redirect('/');
-  }
+  // if (req.user) {
+  //   return res.redirect('/');
+  // }
   res.render('account/login', {
     title: 'Login'
   });
@@ -34,7 +35,9 @@ exports.postLogin = (req, res, next) => {
   }
 
   passport.authenticate('local', (err, user, info) => {
-    if (err) { return next(err); }
+    if (err) { 
+      return next(err); 
+    }
     if (!user) {
       req.flash('errors', info);
       return res.redirect('/login');
@@ -42,7 +45,9 @@ exports.postLogin = (req, res, next) => {
     req.logIn(user, (err) => {
       if (err) { return next(err); }
       req.flash('success', { msg: 'Success! You are logged in.' });
-      res.redirect(req.session.returnTo || '/');
+      req.session.user = user;
+      res.render('home', {title: 'Home', readings : {}, moment: moment, user : user });
+      //res.redirect('/');
     });
   })(req, res, next);
 };
@@ -53,7 +58,8 @@ exports.postLogin = (req, res, next) => {
  */
 exports.logout = (req, res) => {
   req.logout();
-  res.redirect('/');
+  req.session.user = null;
+  res.render('home', {title: 'Home', readings : {}, moment: moment, user : null });
 };
 
 /**
@@ -61,9 +67,9 @@ exports.logout = (req, res) => {
  * Signup page.
  */
 exports.getSignup = (req, res) => {
-  if (req.user) {
-    return res.redirect('/');
-  }
+  // if (req.user) {
+  //   return res.redirect('/');
+  // }
   res.render('account/signup', {
     title: 'Create Account'
   });
@@ -88,7 +94,8 @@ exports.postSignup = (req, res, next) => {
 
   const user = new User({
     email: req.body.email,
-    password: req.body.password
+    password: req.body.password,
+    _gravatar: getGravatar(req.body.email, 60)
   });
 
   User.findOne({ email: req.body.email }, (err, existingUser) => {
@@ -97,16 +104,29 @@ exports.postSignup = (req, res, next) => {
       req.flash('errors', { msg: 'Account with that email address already exists.' });
       return res.redirect('/signup');
     }
+    user.profile.name = req.body.name;
     user.save((err) => {
       if (err) { return next(err); }
       req.logIn(user, (err) => {
         if (err) {
           return next(err);
         }
-        res.redirect('/');
+        req.session.user = user;
+        res.render('home', {title: 'Home', readings : {}, moment: moment, user : user });
       });
     });
   });
+};
+
+function getGravatar(email, size) {
+  if (!size) {
+    size = 200;
+  }
+  if (!email) {
+    return `https://gravatar.com/avatar/?s=${size}&d=retro`;
+  }
+  const md5 = crypto.createHash('md5').update(email).digest('hex');
+  return `https://gravatar.com/avatar/${md5}?s=${size}&d=retro`;
 };
 
 /**
@@ -190,7 +210,8 @@ exports.postDeleteAccount = (req, res, next) => {
     if (err) { return next(err); }
     req.logout();
     req.flash('info', { msg: 'Your account has been deleted.' });
-    res.redirect('/');
+    req.session.user = null;
+    res.render('home', {title: 'Home', readings : {}, moment: moment, user : null });
   });
 };
 

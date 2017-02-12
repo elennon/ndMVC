@@ -9,7 +9,12 @@ let url = 'mongodb://localhost:27017/Measurements';
 var moment = require('moment');
 
 exports.getDownload = (req, res) => {
-    getBuilding(res, getPies);
+    if (req.session.user == undefined ){
+        res.render('home', {title: 'Home', readings : {}, moment: moment, user : null });
+    } else{
+        res.render('download', {title: 'Download' });
+    }
+    //getBuilding(res, getPies);
 };
 
 function getPies(res, buildings){
@@ -60,7 +65,6 @@ function getBuilding(res, callback){
 exports.postDownload = (req, res) => {
     var fromdate = new Date(req.body.Fromdate).getTime();
 	var todate = new Date(req.body.Todate).getTime();
-	var building = req.body.dl_building;
     var pi = req.body.dl_pi;
     var sensor = req.body.dl_sensor;
 	var format = req.body.format;

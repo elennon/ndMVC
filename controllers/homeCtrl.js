@@ -4,9 +4,16 @@ var jsonfile = require('jsonfile')
 var MongoClient = require('mongodb').MongoClient
 var url = 'mongodb://localhost:27017/Measurements';
 var moment = require('moment');
+var AM = require('../models/account-manager');
 
 exports.index = (req, res, next) => {
-    getBuilding(res, getPies);  
+    if (req.session.user == undefined ){
+        res.render('home', {title: 'Home', readings : {}, moment: moment, user : null });
+    } else{
+        var user = req.session.user;
+        res.render('home', {title: 'Home', readings : {}, moment: moment, user : req.session.user });
+    }
+    //getBuilding(res, getPies);
 };
 
 function getPies(res, buildings){

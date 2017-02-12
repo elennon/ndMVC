@@ -6,7 +6,6 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var routes = require('./routes/index');
 const flash = require('express-flash');
 const passport = require('passport');
 const expressValidator = require('express-validator');
@@ -14,6 +13,8 @@ var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var mqtt = require('mqtt');
+const mongoose = require('mongoose');
+const chalk = require('chalk');
 
 const homeController = require('./controllers/homeCtrl');
 const buildingController = require('./controllers/buildingCtrl');
@@ -22,7 +23,6 @@ const statusController = require('./controllers/chartsCtrl');
 const contactController = require('./controllers/contact');
 const userController = require('./controllers/user');
 const passportConfig = require('./config/passport');
-var routes = require('./routes/index');
 var regGroup = require('./routes/regGroup');
 var bmp180 = require('./routes/bmp180');
 var sht15 = require('./routes/sht15');
@@ -34,6 +34,14 @@ var weatherStation = require('./routes/weatherStation');
 var pi = require('./routes/pi');
 var building = require('./routes/building');
 
+//dotenv.load({ path: '.env.example' });
+
+mongoose.Promise = global.Promise;
+mongoose.connect("mongodb://localhost:27017/Measurements");
+mongoose.connection.on('error', () => {
+  console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red('✗'));
+  process.exit();
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -59,6 +67,24 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
+app.use((req, res, next) => {
+  res.locals.user = req.user;
+  next();
+});
+app.use((req, res, next) => {
+  // After successful login, redirect back to the intended page
+  if (!req.user &&
+      req.path !== '/login' &&
+      req.path !== '/signup' &&
+      !req.path.match(/^\/auth/) &&
+      !req.path.match(/\./)) {
+    req.session.returnTo = req.path;
+  } else if (req.user &&
+      req.path == '/account') {
+    req.session.returnTo = req.path;
+  }
+  next();
+});
 app.get('/', homeController.index);
 app.post('/getReadings', homeController.getReadings);
 app.post('/getPies', homeController.getPies);

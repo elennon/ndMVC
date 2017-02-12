@@ -4,9 +4,11 @@ var db = monk('localhost:27017/Measurements');
 const uuid = require('node-uuid');
 
 exports.getBuilding = (req, res) => {
-    res.render('registerBuilding', {
-        title: 'register Building'
-    });
+    if (req.session.user == undefined ){
+        res.render('home', {title: 'Home', readings : {}, moment: moment, user : null });
+    } else{
+        res.render('registerBuilding', {title: 'register Building'});
+    }
 };
 
 /**

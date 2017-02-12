@@ -2,39 +2,42 @@ extends layout
 
 block content
     .page-header
-    form.form-horizontal(method='POST')
-        input(type='hidden', name='_csrf', value=_csrf)
-        .form-group
-            label(class='col-sm-2 control-label', for='building') Building
-            .col-sm-4
-                select.selectpicker.form-control(id="building", name="building", ng-model="buildingSelected" ng-change='selectedBuilding(buildingSelected)' ng-options="building.name for building in buildings track by building.id")
-                    option(value="" ng-if="false")
-            label(class='col-sm-2 control-label', for='pi') Pi
-            .col-sm-4
-                select.selectpicker.form-control(id="pi" name="pi" ng-model="piSelected" ng-options="pi.name for pi in pies track by pi.id")
-                    option(value="" ng-if="false")
-        .form-group   
-            label(class='col-sm-2 control-label', for='sensor') Sensor
-            .col-sm-4
-                select.selectpicker.form-control(id="sensor", name="sensor")
-                    option select one
-                    option(value='Bmp180') Bmp180         
-                    option(value='Hflux') Hflux
-                    option(value='CavityTemp') Cavity Temp
-                    option(value='Mlx906') Mlx906       
-                    option(value='Sht15') Sht15
-                    option(value='Sdp610') Sdp610
-                    option(value='WeatherStation') weather station
-            label(class='col-sm-2 control-label', for='batch') view:
-            .col-sm-4
-                select.selectpicker.form-control(id="batch", name="batch")
-                    option(value=20) 20
-                    option(value=50) 50         
-                    option(value=100) 100
+    if user
+        form.form-horizontal(method='POST')
+            input(type='hidden', name='_csrf', value=_csrf)
+            .form-group
+                label(class='col-sm-2 control-label', for='building') Building
+                .col-sm-4
+                    select.selectpicker.form-control(id="building", name="building", ng-model="buildingSelected" ng-change='selectedBuilding(buildingSelected)' ng-options="building.name for building in buildings track by building.id")
+                        option(value="" ng-if="false")
+                label(class='col-sm-2 control-label', for='pi') Pi
+                .col-sm-4
+                    select.selectpicker.form-control(id="pi" name="pi" ng-model="piSelected" ng-options="pi.name for pi in pies track by pi.id")
+                        option(value="" ng-if="false")
+            .form-group   
+                label(class='col-sm-2 control-label', for='sensor') Sensor
+                .col-sm-4
+                    select.selectpicker.form-control(id="sensor", name="sensor")
+                        option select one
+                        option(value='Bmp180') Bmp180         
+                        option(value='Hflux') Hflux
+                        option(value='CavityTemp') Cavity Temp
+                        option(value='Mlx906') Mlx906       
+                        option(value='Sht15') Sht15
+                        option(value='Sdp610') Sdp610
+                        option(value='WeatherStation') weather station
+                label(class='col-sm-2 control-label', for='batch') view:
+                .col-sm-4
+                    select.selectpicker.form-control(id="batch", name="batch")
+                        option(value=20) 20
+                        option(value=50) 50         
+                        option(value=100) 100
 
-    #users_list
-        include partials/valTable.pug
-  
+        #users_list
+            include partials/valTable.pug
+    else
+        p Logged out...
+
     script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js")
     script(src="controllers/readingController.js")
     //script(src='javascript/main.js')  
