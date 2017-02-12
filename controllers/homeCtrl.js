@@ -4,7 +4,6 @@ var jsonfile = require('jsonfile')
 var MongoClient = require('mongodb').MongoClient
 var url = 'mongodb://localhost:27017/Measurements';
 var moment = require('moment');
-var AM = require('../models/account-manager');
 
 exports.index = (req, res, next) => {
     if (req.session.user == undefined ){
