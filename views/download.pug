@@ -32,7 +32,7 @@ block content
         .form-group   
             label(class='col-sm-2 control-label', for='dl_sensor') Sensor
             .col-sm-6
-                select.selectpicker.form-control(multiple, id="dl_sensor", name="dl_sensor")
+                select.selectpicker.form-control(id="dl_sensor", name="dl_sensor")
                     option select one
                     option(value='Bmp180') Bmp180         
                     option(value='Hflux') Hflux
@@ -44,7 +44,7 @@ block content
         .form-group
             label(class='col-sm-2 control-label', for='format') Format:
             .col-sm-6
-                select.selectpicker.form-control(multiple, id="format", name="format")
+                select.selectpicker.form-control(id="format", name="format")
                     option json                  
                     option xml
                     option excel    
