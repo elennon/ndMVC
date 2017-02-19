@@ -21,7 +21,7 @@ div.container
                         th sensor
                         th time
                         th temp
-                        th pressure
+                        th pressure(Pascal)
                 tbody
                     each reading, index in readings
                         tr(data-id="#{reading.id}")      
@@ -35,7 +35,7 @@ div.container
                         th sensor
                         th time
                         th temp
-                        th rel-humidity
+                        th RH%
                 tbody
                     each reading, index in readings
                         tr(data-id="#{reading.id}")      
@@ -46,23 +46,35 @@ div.container
             else if sensor == 'WeatherStation'
                 thead
                     tr
-                        th wind_direction
-                        th wind_speed
-                        th temp
-                        th pressure
-                        th precipitation
+                        th corrected_direction
+                        th wind_speed(m/s)
+                        th temp(ºC)
+                        th pressure(Pascal)
+                        th precipitation(mm)
                         th RH%
                         th time
                 tbody
                     each reading, index in readings
                         tr(data-id="#{reading.id}")      
-                            td= reading.wind_direction
+                            td= reading.corrected_direction
                             td= reading.wind_speed
                             td= reading.temp
                             td= reading.pressure
                             td= reading.precipitation
                             td= reading['rh%']
                             td #{moment(reading.time).format("YYYY-MM-DD HH:mm")}
+            else if sensor == 'Hflux'
+                thead
+                    tr
+                        th sensor
+                        th time
+                        th value(W/m²)
+                tbody
+                    each reading, index in readings
+                        tr(data-id="#{reading.id}")      
+                            td= reading.sensor
+                            td #{moment(reading.createdAt).format("YYYY-MM-DD HH:mm")}
+                            td= reading.val 
             else
                 thead
                     tr
