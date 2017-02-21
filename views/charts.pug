@@ -8,8 +8,13 @@ block content
     script(type='text/javascript', src="http://code.highcharts.com/highcharts.js")
     script(type='text/javascript', src="http://code.jquery.com/jquery-1.7.1.min.js")
     script.
-        var socket = io('//localhost:3000');
+        var socket = io();
         var chart;
+        var data = !{JSON.stringify(starter)}; 
+        var processed_json = new Array();
+        for (i = 0; i < data.length; i++) {
+            processed_json.push([data[i].time, parseInt(data[i].wind_speed)]);
+        }
         chart = new Highcharts.Chart({
             chart: {
                 renderTo: 'chart', 
@@ -44,6 +49,6 @@ block content
             },
             series: [{
                 name: 'Wind Speed',
-                data: []
+                data: processed_json
             }]
         });
