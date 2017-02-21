@@ -15,6 +15,7 @@ block content
         for (i = 0; i < data.length; i++) {
             processed_json.push([data[i].time, parseInt(data[i].wind_speed)]);
         }
+        processed_json.reverse();
         chart = new Highcharts.Chart({
             chart: {
                 renderTo: 'chart', 
