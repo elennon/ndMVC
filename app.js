@@ -93,6 +93,7 @@ app.get('/charts', statusController.getCharts);
 app.get('/download', downloadController.getDownload);
 app.post('/registerBuilding', buildingController.postBuilding);
 app.post('/download', downloadController.postDownload);
+app.post('/downloadExcel', downloadController.postExcelDownload);
 app.get('/login', userController.getLogin);
 app.post('/login', userController.postLogin);
 app.get('/logout', userController.logout);
