@@ -1,0 +1,47 @@
+form.form-horizontal(action='/download', method='POST')
+    input(type='hidden', name='_csrf', value=_csrf)
+    .form-group
+        label(class='col-sm-2 control-label', for='dl_fromdate') From:
+        .col-sm-4
+            div.input-group.date(data-provide="datepicker")
+                input.form-control(type="text", id="dl_fromdate", name="Fromdate", placeholder="from")
+                div.input-group-addon
+                    span.glyphicon.glyphicon-th
+        label(class='col-sm-2 control-label', for='dl_todate') To:
+        .col-sm-4
+            div.input-group.date(data-provide="datepicker")
+                input.form-control(type="text", id="dl_todate", name="Todate", placeholder="to")
+                div.input-group-addon
+                    span.glyphicon.glyphicon-th
+    .form-group
+        label(class='col-sm-2 control-label', for='dl_building') Building
+        .col-sm-4
+            select.selectpicker.form-control(id="dl_building", name="dl_building", ng-model="buildingSelected" ng-change='selectedBuilding(buildingSelected)' ng-options="building.name for building in buildings track by building.id")
+                option(value="" ng-if="false")
+    .form-group
+        label(class='col-sm-2 control-label', for='dl_pi') Pi
+        .col-sm-4
+            select.selectpicker.form-control(id="dl_pi" name="dl_pi" ng-model="piSelected" ng-options="pi.name for pi in pies track by pi.id")
+                option(value="" ng-if="false")
+    .form-group   
+        label(class='col-sm-2 control-label', for='dl_sensor') Sensor
+        .col-sm-6
+            select.selectpicker.form-control(id="dl_sensor", name="dl_sensor")
+                option select one
+                option(value='Bmp180') Bmp180         
+                option(value='Hflux') Hflux
+                option(value='CavityTemp') Cavity Temp
+                option(value='Mlx906') Mlx906       
+                option(value='Sht15') Sht15
+                option(value='Sdp610') Sdp610
+                option(value='WeatherStation') weather station
+    .form-group
+        label(class='col-sm-2 control-label', for='format') Format:
+        .col-sm-6
+            select.selectpicker.form-control(id="format", name="format")
+                option json
+                option xml
+    .form-group
+        .col-sm-offset-2.col-sm-8
+            button.btn.btn-primary(type='submit')
+                | Download

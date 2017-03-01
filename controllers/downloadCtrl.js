@@ -7,6 +7,8 @@ var json2xls = require('json2xls');
 var MongoClient = require('mongodb').MongoClient
 let url = 'mongodb://localhost:27017/Measurements';
 var moment = require('moment');
+var exel = require('../models/exel.js');
+
 
 exports.getDownload = (req, res) => {
     if (req.session.user == undefined ){
@@ -79,7 +81,6 @@ exports.postDownload = (req, res) => {
                 if(err){
                     res.send(err);
                 } else if(result.length){
-                    console.log('and the number is ********   in download post' + result.length);
                     switch(format){
                         case 'json':
                             jsonfile.writeFile(filename + ".json", result, {flags:'w'}, function (err) {
@@ -115,36 +116,16 @@ exports.postDownload = (req, res) => {
     // res.redirect('/registerBuilding');
 };
 
+function callback(){
+    console.log('talt back');
+}
 
 exports.postExcelDownload = (req, res) => {
-    var fromdate = new Date(req.body.Fromdate).getTime();
-	var todate = new Date(req.body.Todate).getTime();
-    let filename = "data"; // {"ip": pi}
-    MongoClient.connect(url, function(err, db){
-        if(err){
-            console.log('error:' + err);
-        } else{            
-            var collection = db.collection(sensor);
-              collection.find({"ip": pi , "createdAt": {"$gte": fromdate }}).toArray(function(err, result){        
-                if(err){
-                    res.send(err);
-                } else if(result.length){
-                    var xml = js2xmlparser.parse(sensor, JSON.stringify(result));
-                    fs.writeFile(filename + '.xml', xml, {flags:'w'}, function(err, data){
-                        if (err) console.log(err);
-                        console.log("successfully written our update xml to file");
-                        res.download("data.xml");
-                    })
-                    db.close();
-                } else{
-                    res.send('no thing found');
-                    db.close();
-                }
-            })
-        }
-    });
-    // req.flash('success', { msg: 'Email has been sent successfully!' });
-    // res.redirect('/registerBuilding');
+    var building = req.body.exdl_building;
+    var fromdate = new Date(req.body.exdl_fromdate).getTime();
+	exel(building, fromdate, callback)
+    
+    
 };
 // var cursor =db.collection('Hflux').find( { "createdAt": { $gt: dat } } );
             // cursor.each(function(err, doc) {                
