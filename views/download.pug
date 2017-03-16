@@ -6,16 +6,16 @@ block content
         .collapse.navbar-collapse
             ul.nav.navbar-nav(role="tablist")
                 li.active
-                    a(href="#home" role="tab" data-toggle="tab") Excel
+                    a(href="#profile" role="tab" data-toggle="tab") sensors                  
                 li
-                    a(href="#profile" role="tab" data-toggle="tab") xml/json
+                    a(href="#home" role="tab" data-toggle="tab") templates  
         div.spacer
             .tab-content.search-tabs-content
-                .tab-pane.active(id="home")
-                    include partials/excelform.pug
-                .tab-pane(id="profile")
+                .tab-pane.active(id="profile")
                     include partials/xmlJsonForm.pug 
-                    
+                .tab-pane(id="home")
+                    include partials/excelform.pug
+                                      
 
     //- #downloadForm
     //-     include partials/excelform.pug

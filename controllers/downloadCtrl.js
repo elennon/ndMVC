@@ -8,7 +8,9 @@ var MongoClient = require('mongodb').MongoClient
 let url = 'mongodb://localhost:27017/Measurements';
 var moment = require('moment');
 var exel = require('../models/exel.js');
-
+var jstoxml = require('jstoxml');
+var excelbuilder = require('msexcel-builder');
+var excel = require('node-excel-export');
 
 exports.getDownload = (req, res) => {
     if (req.session.user == undefined ){
@@ -16,56 +18,10 @@ exports.getDownload = (req, res) => {
     } else{
         res.render('download', {title: 'Download' });
     }
-    //getBuilding(res, getPies);
 };
 
-function getPies(res, buildings){
-    MongoClient.connect(url, function(err, db){
-        if(err){
-            console.log('error:' + err);
-        } else{            
-            var collection = db.collection('Pi');
-            collection.find().toArray(function(err, result){
-                if(err){
-                    res.send(err);
-                } else if(result.length){
-                    console.log('and the number is ********' + result.length)
-                    res.render('download', {title: 'Download', buildings : buildings, 
-                        pies : result});
-                    db.close();
-                } else{
-                    res.send('no thing found');
-                    db.close();
-                }
-            })
-        }
-    });
-}
-
-function getBuilding(res, callback){
-    MongoClient.connect(url, function(err, db){
-        if(err){
-            console.log('error:' + err);
-        } else{            
-            var collection = db.collection('Building');
-            collection.find().toArray(function(err, result){
-                if(err){
-                    res.send(err);
-                } else if(result.length){
-                    console.log('and the number is ********' + result.length)
-                    callback(res, result);
-                    db.close();
-                } else{
-                    res.send('no thing found');
-                    db.close();
-                }
-            })
-        }
-    });
-}
-
 exports.postDownload = (req, res) => {
-    var fromdate = new Date(req.body.Fromdate).getTime();
+    var fromdate = req.body.Fromdate;// new Date(req.body.Fromdate).getTime();
 	var todate = new Date(req.body.Todate).getTime();
     var pi = req.body.dl_pi;
     var sensor = req.body.dl_sensor;
@@ -77,60 +33,79 @@ exports.postDownload = (req, res) => {
             console.log('error:' + err);
         } else{            
             var collection = db.collection(sensor);
-              collection.find({"ip": pi , "createdAt": {"$gte": fromdate }}).toArray(function(err, result){        
-                if(err){
-                    res.send(err);
-                } else if(result.length){
-                    switch(format){
-                        case 'json':
-                            jsonfile.writeFile(filename + ".json", result, {flags:'w'}, function (err) {
-                                res.download("data.json");
-                            })	
-                            break;
-                        case 'xml':
-                            var xml = js2xmlparser.parse(sensor, JSON.stringify(result));
-                            fs.writeFile(filename + '.xml', xml, {flags:'w'}, function(err, data){
-                                if (err) console.log(err);
-                                console.log("successfully written our update xml to file");
-                                res.download("data.xml");
-                            })
-                            break;
-                        case 'excel':
-                            var xls = json2xls(result);
-                            fs.writeFile(filename + '.xlsx', xls, 'binary', function(err, data){
-                                if (err) console.log(err);
-                                console.log("successfully written our update xml to file");
-                                res.download(filename + '.xlsx');
-                            })
-                            break;
-                    } 
-                    db.close();
-                } else{
-                    res.send('no thing found');
-                    db.close();
-                }
-            })
+            if (sensor === "WeatherStation") {
+                collection.find({"time": {"$gte": "2017-02-05T17:07:55+00:00" }}).toArray(function(err, result){
+                //collection.find().limit(1000).toArray(function(err, result){
+                //collection.find().limit(60000).toArray(function(err, result){ //{"time": {"$gte": fromdate }} // 109609
+                    if(err){
+                        res.send(err);
+                    } else if(result.length){
+                        downloadResult(result, format, res, filename, "WeatherStation", db);
+                    } else{
+                        res.send('no thing found');
+                        db.close();
+                    }
+                })
+            } else {
+                collection.find({"ip": pi , "createdAt": {"$gte": fromdate }}).toArray(function(err, result){        
+                    if(err){
+                        res.send(err);
+                    } else if(result.length){                       
+                        downloadResult(result, format, res, filename, sensor, db);
+                    } else{
+                        res.send('no thing found');
+                        db.close();
+                    }
+                })
+            }
         }
     });
-    // req.flash('success', { msg: 'Email has been sent successfully!' });
-    // res.redirect('/registerBuilding');
 };
 
-function callback(){
-    console.log('talt back');
+function downloadResult(result, format, res, filename, sensor, db){
+    console.log("result count is: " + result.length);
+    switch(format){
+        case 'json':
+            jsonfile.writeFile(filename + ".json", result, {flags:'w'}, function (err) {
+                res.download("data.json");
+                db.close();
+            })	
+            break;
+        case 'xml':
+            var xml = jstoxml.toXML(JSON.stringify(result));
+            fs.writeFile(filename + '.xml', xml, {flags:'w'}, function(err, data){
+                if (err) console.log(err);
+                console.log("successfully written our update xml to file");
+                res.download("data.xml");
+                db.close();
+            })
+            break;
+        case 'excel':
+            console.log("in ecxel :" + result.length);
+            exel(res, sensor, result, db);           
+            break;
+    } 
 }
 
 exports.postExcelDownload = (req, res) => {
     var building = req.body.exdl_building;
     var fromdate = new Date(req.body.exdl_fromdate).getTime();
-	exel(building, fromdate, callback)
-    
-    
+	exel(res, selected, result, db);     
 };
-// var cursor =db.collection('Hflux').find( { "createdAt": { $gt: dat } } );
-            // cursor.each(function(err, doc) {                
-            //     if (doc != null) {
-            //         console.log('***************************************')
-            //         console.dir(doc);
-            //     }
-            // });
+
+
+// function doWeather(res, db, collection, fromdate, filename){
+//     //collection.find({"time": {"$gte": fromdate }}).sort({"time":-1}).limit(100).toArray(function(err, result){
+//     //collection.find({"time": {"$gte": fromdate }}).limit(100).toArray(function(err, result){
+//     collection.find().sort({"time":-1}).limit(100).toArray(function(err, result){
+//         if(err){
+//             res.send(err);
+//         } else if(result.length){
+//             downloadResult(result, format, res, filename, "WeatherStation", db);
+//             db.close();
+//         } else{
+//             res.send('no thing found');
+//             db.close();
+//         }
+//     })
+// }
