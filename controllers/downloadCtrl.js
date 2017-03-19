@@ -27,13 +27,14 @@ exports.postDownload = (req, res) => {
     var pi = req.body.dl_pi;
     var sensor = req.body.dl_sensor;
 	var format = req.body.format;
+    var building = req.body.dl_building
     //let filename = util.format('%s-%s-%s-%s-%s', building, pi, sensor, fromdate, todate) , {"createdAt": {"$gte": fromdate }} 
     let filename = "data"; // {"ip": pi}
     MongoClient.connect(url, function(err, db){
         if(err){
             console.log('error:' + err);
         } else{            
-            var collection = db.collection("WeatherStation");
+            var collection = db.collection("WeatherStation2");
             if (sensor === "WeatherStation") {
                 collection.aggregate(
                 [
@@ -48,10 +49,10 @@ exports.postDownload = (req, res) => {
                         res.send(err);
                     } else if(result.length){
                         console.log('have list' + result.length);
-                        downloadResult(result, format, res, filename, "WeatherStation", db);
+                        downloadResult(result, format, res, filename, "WeatherStation", db, building);
                     } else{
                         console.log('no thing found -- ' );
-                        res.send('no thing found');
+                        res.send('nothing found');
                         db.close();
                     }
                 });
@@ -60,7 +61,7 @@ exports.postDownload = (req, res) => {
                     if(err){
                         res.send(err);
                     } else if(result.length){                       
-                        downloadResult(result, format, res, filename, sensor, db);
+                        downloadResult(result, format, res, filename, sensor, db, building);
                     } else{
                         res.send('no thing found');
                         db.close();
@@ -71,7 +72,7 @@ exports.postDownload = (req, res) => {
     });
 };
 
-function downloadResult(result, format, res, filename, sensor, db){
+function downloadResult(result, format, res, filename, sensor, db, building){
     console.log("result count is: " + result.length);
     switch(format){
         case 'json':
@@ -91,7 +92,7 @@ function downloadResult(result, format, res, filename, sensor, db){
             break;
         case 'excel':
             console.log("in ecxel :" + result.length);
-            exel(res, sensor, result, db);           
+            exel(res, sensor, result, db, building);           
             break;
     } 
 }

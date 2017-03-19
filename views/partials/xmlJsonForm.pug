@@ -10,7 +10,7 @@ form.form-horizontal(action='/download', method='POST')
     .form-group
         label(class='col-sm-2 control-label', for='dl_building') Building
         .col-sm-4
-            select.selectpicker.form-control(id="dl_building", name="dl_building", ng-model="buildingSelected" ng-change='selectedBuilding(buildingSelected)' ng-options="building.name for building in buildings track by building.id")
+            select.selectpicker.form-control(id="dl_building", name="dl_building", ng-model="buildingSelected" ng-change='selectedBuilding(buildingSelected)' ng-options="building.name for building in buildings track by building.name")
                 option(value="" ng-if="false")
     .form-group
         label(class='col-sm-2 control-label', for='dl_pi') Pi
