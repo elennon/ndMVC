@@ -21,7 +21,8 @@ exports.getDownload = (req, res) => {
 };
 
 exports.postDownload = (req, res) => {
-    var fromdate = req.body.Fromdate;// new Date(req.body.Fromdate).getTime();
+    //var fromdate =  moment(req.body.Fromdate).format();/// new Date(req.body.Fromdate).getTime();
+    var fromdate = moment(req.body.Fromdate, 'MM/DD/YYYY', true).format();
 	var todate = new Date(req.body.Todate).getTime();
     var pi = req.body.dl_pi;
     var sensor = req.body.dl_sensor;
@@ -32,20 +33,28 @@ exports.postDownload = (req, res) => {
         if(err){
             console.log('error:' + err);
         } else{            
-            var collection = db.collection(sensor);
+            var collection = db.collection("WeatherStation");
             if (sensor === "WeatherStation") {
-                collection.find({"time": {"$gte": "2017-02-05T17:07:55+00:00" }}).toArray(function(err, result){
-                //collection.find().limit(1000).toArray(function(err, result){
-                //collection.find().limit(60000).toArray(function(err, result){ //{"time": {"$gte": fromdate }} // 109609
+                collection.aggregate(
+                [
+                    { "$match": {time: { $gt: fromdate } } },
+                    //{ "$match": { "ip": { "$in": pies }, createdAt: { $gt: t } } },
+                    //{ $match: { ip: "95978631-9454-4626-9748-eaec860c42eb" } },
+                    //{ $match: { createdAt: { $gt: t } } },
+                    { $group : { _id : "$id", row: { $push: "$$ROOT" } } }
+                ],{ allowDiskUse:true }
+                ).toArray(function(err, result){        
                     if(err){
                         res.send(err);
                     } else if(result.length){
+                        console.log('have list' + result.length);
                         downloadResult(result, format, res, filename, "WeatherStation", db);
                     } else{
+                        console.log('no thing found -- ' );
                         res.send('no thing found');
                         db.close();
                     }
-                })
+                });
             } else {
                 collection.find({"ip": pi , "createdAt": {"$gte": fromdate }}).toArray(function(err, result){        
                     if(err){

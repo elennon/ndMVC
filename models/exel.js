@@ -1,12 +1,6 @@
-var excelbuilder = require('msexcel-builder');
-var excelObj = require("./excelObject.js");
 var MongoClient = require('mongodb').MongoClient
 let url = 'mongodb://localhost:27017/Measurements';
 var moment = require('moment');
-var json2xls = require('json2xls');
-var fs = require('fs');
-var jsonfile = require('jsonfile');
-
 
 module.exports = function createWorkbook(res, sensor, result, db) {
     res.attachment('file.xls');
@@ -46,9 +40,9 @@ module.exports = function createWorkbook(res, sensor, result, db) {
                 " RH%" + "\n";
             console.log('******* case WeatherStation');
             for (var i = 0; i < result.length; i++) {                       
-                c += result[i].corrected_direction + "\t" + moment(result[i].time).format("YYYY-MM-DD HH:mm") + "\t" +
-                    result[i].wind_speed + "\t" + result[i].temp + "\t" + result[i].pressure + "\t" + result[i].precipitation + "\t" + 
-                    result[i]['rh%'] + "\n";
+                c += result[i].row[0].corrected_direction + "\t" + moment(result[i].row[0].time).format("YYYY-MM-DD HH:mm") 
+                    + "\t" + result[i].row[0].wind_speed + "\t" + result[i].row[0].temp + "\t" + result[i].row[0].pressure + 
+                    "\t" + result[i].row[0].precipitation + "\t" + result[i].row[0]['rh%'] + "\n";                 
             }
             console.log('******* case after 4');
             break;
