@@ -36,15 +36,16 @@ exports.postDownload = (req, res) => {
         } else{            
             var collection = db.collection("WeatherStation2");
             if (sensor === "WeatherStation") {
-                collection.aggregate(
-                [
-                    { "$match": {time: { $gt: fromdate } } },
-                    //{ "$match": { "ip": { "$in": pies }, createdAt: { $gt: t } } },
-                    //{ $match: { ip: "95978631-9454-4626-9748-eaec860c42eb" } },
-                    //{ $match: { createdAt: { $gt: t } } },
-                    { $group : { _id : "$id", row: { $push: "$$ROOT" } } }
-                ],{ allowDiskUse:true }
-                ).toArray(function(err, result){        
+                // collection.aggregate(
+                // [
+                //     { "$match": {time: { $gt: fromdate } } },
+                //     //{ "$match": { "ip": { "$in": pies }, createdAt: { $gt: t } } },
+                //     //{ $match: { ip: "95978631-9454-4626-9748-eaec860c42eb" } },
+                //     //{ $match: { createdAt: { $gt: t } } },
+                //     { $group : { _id : "$id", row: { $push: "$$ROOT" } } }
+                // ],{ allowDiskUse:true }).
+                collection.find({"time": {"$gte": fromdate }}).sort({"time":-1}).limit(900000).
+                toArray(function(err, result){        
                     if(err){
                         res.send(err);
                     } else if(result.length){
