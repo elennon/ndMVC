@@ -104,8 +104,6 @@ exports.postExcelDownload = (req, res) => {
 	exel(res, selected, result, db);     
 };
 
-db.WeatherStation2.aggregate([{ $group : { _id : "$time", row: { $push: "$$ROOT" } } }],{ allowDiskUse:true }).forEach(function(doc){db.WeatherStation3.insert({"time": doc.row[0].time})});
-
 // function doWeather(res, db, collection, fromdate, filename){
 //     //collection.find({"time": {"$gte": fromdate }}).sort({"time":-1}).limit(100).toArray(function(err, result){
 //     //collection.find({"time": {"$gte": fromdate }}).limit(100).toArray(function(err, result){
