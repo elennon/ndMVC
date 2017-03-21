@@ -9,28 +9,28 @@ module.exports = function createWorkbook(res, sensor, result, db, building) {
         case 'Mlx906':
             c +="sensor"+"\t"+" time"+"\t"+"ambiTemp"+"\t"+"skyTemp"+"\n";
             for (var i = 0; i < result.length; i++) {                       
-                c += result[i].sensor + "\t" + moment(result.createdAt).format("YYYY-MM-DD HH:mm") 
+                c += result[i].sensor + "\t" + moment(result[i].createdAt).format("YYYY-MM-DD HH:mm") 
                 + "\t" + result[i].ambiTemp + "\t" + result[i].skyTemp + "\n";
             }
             break;
         case 'Bmp180':
             c +="sensor"+"\t"+" time"+"\t"+"temp(ºC)"+"\t"+"pressure(Pascal)"+"\n";
             for (var i = 0; i < result.length; i++) {                       
-                c += result[i].sensor + "\t" + moment(result.createdAt).format("YYYY-MM-DD HH:mm")  
+                c += result[i].sensor + "\t" + moment(result[i].createdAt).format("YYYY-MM-DD HH:mm")  
                 + "\t" + result[i].temp + "\t" + result[i].pressure + "\n";
             }
             break;
         case 'Sht15':
             c +="sensor"+"\t"+" time"+"\t"+"temp"+"\t"+"RH%"+"\n";
             for (var i = 0; i < result.length; i++) {                       
-                c += result[i].sensor + "\t" + moment(result.createdAt).format("YYYY-MM-DD HH:mm")  
+                c += result[i].sensor + "\t" + moment(result[i].createdAt).format("YYYY-MM-DD HH:mm")  
                 + "\t" + result[i].temperature + "\t" + result[i].rh + "\n";
             }
             break;
         case 'Hflux':
             c +="sensor"+"\t" + " time" + "\t" + "value(W/m²)" + "\n";
             for (var i = 0; i < result.length; i++) {                       
-                c += result[i].sensor + "\t" + moment(result.createdAt).format("YYYY-MM-DD HH:mm")  
+                c += result[i].sensor + "\t" + moment(result[i].createdAt).format("YYYY-MM-DD HH:mm")  
                 + "\t" + result[i].val + "\n";
             }
             break;
