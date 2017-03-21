@@ -22,7 +22,7 @@ exports.getDownload = (req, res) => {
 
 exports.postDownload = (req, res) => {
     //var fromdate =  moment(req.body.Fromdate).format();/// new Date(req.body.Fromdate).getTime();
-    var fromdate = moment(req.body.Fromdate, 'MM/DD/YYYY', true).format();
+    
 	var todate = new Date(req.body.Todate).getTime();
     var pi = req.body.dl_pi;
     var sensor = req.body.dl_sensor;
@@ -34,8 +34,9 @@ exports.postDownload = (req, res) => {
         if(err){
             console.log('error:' + err);
         } else{            
-            var collection = db.collection("WeatherStation2");
+            var collection = db.collection(sensor);
             if (sensor === "WeatherStation") {
+                var fromdate = moment(req.body.Fromdate, 'MM/DD/YYYY', true).format();
                 collection.aggregate(
                 [
                     { "$match": {time: { $gt: fromdate } } },
@@ -58,6 +59,7 @@ exports.postDownload = (req, res) => {
                     }
                 });
             } else {
+                var fromdate = new Date(req.body.Fromdate).getTime();
                 collection.find({"ip": pi , "createdAt": {"$gte": fromdate }}).toArray(function(err, result){        
                     if(err){
                         res.send(err);
