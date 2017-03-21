@@ -36,20 +36,20 @@ exports.postDownload = (req, res) => {
         } else{            
             var collection = db.collection("WeatherStation2");
             if (sensor === "WeatherStation") {
-                // collection.aggregate(
-                // [
-                //     { "$match": {time: { $gt: fromdate } } },
-                //     //{ "$match": { "ip": { "$in": pies }, createdAt: { $gt: t } } },
-                //     //{ $match: { ip: "95978631-9454-4626-9748-eaec860c42eb" } },
-                //     //{ $match: { createdAt: { $gt: t } } },
-                //     { $group : { _id : "$id", row: { $push: "$$ROOT" } } }
-                // ],{ allowDiskUse:true }).
-                collection.find({"time": {"$gte": fromdate }}).sort({"time":-1}).limit(900000).
+                collection.aggregate(
+                [
+                    { "$match": {time: { $gt: fromdate } } },
+                    //{ "$match": { "ip": { "$in": pies }, createdAt: { $gt: t } } },
+                    //{ $match: { ip: "95978631-9454-4626-9748-eaec860c42eb" } },
+                    //{ $match: { createdAt: { $gt: t } } },
+                    { $group : { _id : "$time", row: { $push: "$$ROOT" } } }
+                ],{ allowDiskUse:true }).
+                //collection.find({"time": {"$gte": fromdate }}).limit(100000).sort({"time":-1}).
                 toArray(function(err, result){        
                     if(err){
                         res.send(err);
                     } else if(result.length){
-                        console.log('have list' + result.length);
+                        console.log('have list ' + result.length);
                         downloadResult(result, format, res, filename, "WeatherStation", db, building);
                     } else{
                         console.log('no thing found -- ' );
@@ -104,6 +104,7 @@ exports.postExcelDownload = (req, res) => {
 	exel(res, selected, result, db);     
 };
 
+db.WeatherStation2.aggregate([{ $group : { _id : "$time", row: { $push: "$$ROOT" } } }],{ allowDiskUse:true }).forEach(function(doc){db.WeatherStation3.insert({"time": doc.row[0].time})});
 
 // function doWeather(res, db, collection, fromdate, filename){
 //     //collection.find({"time": {"$gte": fromdate }}).sort({"time":-1}).limit(100).toArray(function(err, result){

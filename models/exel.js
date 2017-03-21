@@ -41,9 +41,9 @@ module.exports = function createWorkbook(res, sensor, result, db, building) {
                 " RH%" + "\n";
             console.log('******* case WeatherStation');
             for (var i = 0; i < result.length; i++) {                       
-                c += result[i].row[0].corrected_direction + "\t" + moment(result[i].row[0].time).format("YYYY-MM-DD HH:mm") 
-                    + "\t" + result[i].row[0].wind_speed + "\t" + result[i].row[0].temp + "\t" + result[i].row[0].pressure + 
-                    "\t" + result[i].row[0].precipitation + "\t" + result[i].row[0]['rh'] + "\n";                 
+                c += result.row[0][i].corrected_direction + "\t" + moment(result.row[0][i].time).format("YYYY-MM-DD HH:mm") 
+                    + "\t" + result.row[0][i].wind_speed + "\t" + result.row[0][i].temp + "\t" + result.row[0][i].pressure + 
+                    "\t" + result.row[0][i].precipitation + "\t" + result.row[0][i]['rh'] + "\n";                 
             }
             console.log('******* case after 4');
             break;
@@ -58,3 +58,13 @@ module.exports = function createWorkbook(res, sensor, result, db, building) {
     db.close();
     return res.send(c);
 }
+// for (var i = 0; i < result.length; i++) {                       
+//                 c += result[i].row[0].corrected_direction + "\t" + moment(result[i].row[0].time).format("YYYY-MM-DD HH:mm") 
+//                     + "\t" + result[i].row[0].wind_speed + "\t" + result[i].row[0].temp + "\t" + result[i].row[0].pressure + 
+               
+
+// for (var i = 0; i < result.length; i++) {                       
+//                 c += result[i].corrected_direction + "\t" + moment(result[i].time).format("YYYY-MM-DD HH:mm") 
+//                     + "\t" + result[i].wind_speed + "\t" + result[i].temp + "\t" + result[i].pressure + 
+//                     "\t" + result[i].precipitation + "\t" + result[i]['rh'] + "\n";                 
+//             }
