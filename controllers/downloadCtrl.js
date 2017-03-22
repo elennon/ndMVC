@@ -22,7 +22,7 @@ exports.getDownload = (req, res) => {
 
 exports.postDownload = (req, res) => {
     //var fromdate =  moment(req.body.Fromdate).format();/// new Date(req.body.Fromdate).getTime();
-    
+    var fggfg = moment("2017-03-01T01:20:00.000Z").format()
 	var todate = new Date(req.body.Todate).getTime();
     var pi = req.body.dl_pi;
     var sensor = req.body.dl_sensor;
@@ -37,6 +37,10 @@ exports.postDownload = (req, res) => {
             var collection = db.collection(sensor);
             if (sensor === "WeatherStation") {
                 var fromdate = new Date(req.body.Fromdate);
+<<<<<<< Updated upstream
+=======
+                //var fromdate = moment(req.body.Fromdate, 'MM/DD/YYYY', true).format();
+>>>>>>> Stashed changes
                 collection.aggregate(
                 [
                     { "$match": {time: { $gt: fromdate } } },

@@ -1,28 +1,29 @@
 extends layout
 
 block content
-    .navbar-header
-    div.spacer
-        .collapse.navbar-collapse
-            ul.nav.navbar-nav(role="tablist")
-                li.active
-                    a(href="#profile" role="tab" data-toggle="tab") sensors                  
-                li
-                    a(href="#home" role="tab" data-toggle="tab") templates  
+    div(ng-controller="dwnloadCtrller")
+        .navbar-header
         div.spacer
-            .tab-content.search-tabs-content
-                .tab-pane.active(id="profile")
-                    include partials/xmlJsonForm.pug 
-                .tab-pane(id="home")
-                    include partials/excelform.pug
-                                      
+            .collapse.navbar-collapse
+                ul.nav.navbar-nav(role="tablist")
+                    li.active
+                        a(href="#profile" role="tab" data-toggle="tab") sensors                  
+                    li
+                        a(href="#home" role="tab" data-toggle="tab") templates  
+            div.spacer
+                .tab-content.search-tabs-content
+                    .tab-pane.active(id="profile")
+                        include partials/xmlJsonForm.pug 
+                    .tab-pane(id="home")
+                        include partials/excelform.pug
+                                        
 
     //- #downloadForm
     //-     include partials/excelform.pug
 
 
     script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js")
-    script(src="controllers/readingController.js")
+    script(src="controllers/dwnloadController.js")
 
     //- .search-tabs-wrapper
     //-     ul.nav.nav-tabs(role="tablist")
