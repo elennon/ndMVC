@@ -36,7 +36,7 @@ exports.postDownload = (req, res) => {
         } else{            
             var collection = db.collection(sensor);
             if (sensor === "WeatherStation") {
-                var fromdate = moment(req.body.Fromdate, 'MM/DD/YYYY', true).format();
+                var fromdate = new Date(req.body.Fromdate);
                 collection.aggregate(
                 [
                     { "$match": {time: { $gt: fromdate } } },

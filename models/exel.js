@@ -35,13 +35,13 @@ module.exports = function createWorkbook(res, sensor, result, db, building) {
             }
             break;
         case 'WeatherStation':
+            c = "";
             c += " Weather Station data \n";
             c +=" corrected_direction"+"\t" + " time" + "\t" + " wind_speed(m/s)" + "\t" +
                 " temp(ºC)" + "\t" + " pressure(Pascal)" + "\t" + " precipitation(mm)"+ "\t" +
                 " RH%" + "\n";
             console.log('******* case WeatherStation');
-            for (var i = 0; i < result.length; i++) {                    
-                var fsfsf =    result;
+            for (var i = 0; i < result.length; i++) {
                 c += result[i].row[0].corrected_direction + "\t" + moment(result[i].row[0].time).format("YYYY-MM-DD HH:mm") 
                     + "\t" + result[i].row[0].wind_speed + "\t" + result[i].row[0].temp + "\t" + result[i].row[0].pressure + 
                     "\t" + result[i].row[0].precipitation + "\t" + result[i].row[0]['rh'] + "\n";                 
