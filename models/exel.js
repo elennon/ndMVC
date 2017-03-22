@@ -40,10 +40,11 @@ module.exports = function createWorkbook(res, sensor, result, db, building) {
                 " temp(ºC)" + "\t" + " pressure(Pascal)" + "\t" + " precipitation(mm)"+ "\t" +
                 " RH%" + "\n";
             console.log('******* case WeatherStation');
-            for (var i = 0; i < result.length; i++) {                       
-                c += result.row[0][i].corrected_direction + "\t" + moment(result.row[0][i].time).format("YYYY-MM-DD HH:mm") 
-                    + "\t" + result.row[0][i].wind_speed + "\t" + result.row[0][i].temp + "\t" + result.row[0][i].pressure + 
-                    "\t" + result.row[0][i].precipitation + "\t" + result.row[0][i]['rh'] + "\n";                 
+            for (var i = 0; i < result.length; i++) {                    
+                var fsfsf =    result;
+                c += result[i].row[0].corrected_direction + "\t" + moment(result[i].row[0].time).format("YYYY-MM-DD HH:mm") 
+                    + "\t" + result[i].row[0].wind_speed + "\t" + result[i].row[0].temp + "\t" + result[i].row[0].pressure + 
+                    "\t" + result[i].row[0].precipitation + "\t" + result[i].row[0]['rh'] + "\n";                 
             }
             console.log('******* case after 4');
             break;
